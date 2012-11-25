@@ -1784,7 +1784,11 @@ function! s:TreeDirNode.refresh()
         let invalidFilesFound = 0
         let dir = self.path
         let globDir = dir.str({'format': 'Glob'})
-        let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
+        if version >= 703
+            let filesStr = globpath(globDir, '*', 1) . "\n" . globpath(globDir, '.*', 1)
+        else
+            let filesStr = globpath(globDir, '*') . "\n" . globpath(globDir, '.*')
+        endif
         let files = split(filesStr, "\n")
         for i in files
             "filter out the .. and . directories
